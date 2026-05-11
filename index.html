@@ -16,7 +16,7 @@
         <navbar
             :pages="pages"
             :activePage="activePage"
-            :nav-link-click="(index) => activePage = index"
+            @nav-link-click="(index) => activePage = index"
         ></navbar>
 
         <page-viewer 
@@ -98,7 +98,7 @@
                                         aria-current="page" 
                                         :href="page.link.url"
                                         :title="\`This link goes to the \${page.link.text} page\`"
-                                        @click.prevent="navLinkClick(index)",
+                                        @click.prevent="$emit('navLinkClick', index)",
                                     >{{ page.link.text }}</a>
                                 </li>
                             </ul>
