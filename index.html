@@ -9,45 +9,15 @@
         <script src="https://unpkg.com/vue@3"></script>
     </head>
     <body>
-        <!-- Здесь в класс добавляем классы для темной и светлой темы, а в атрибут class добавляем синтаксис v-bind:class или просто :class и передаем объект, в котором ключ - это класс, который мы хотим добавить, а значение - это условие, при котором этот класс будет добавляться
-        и так мы можем динамически менять классы в зависимости от условий. -->
-        <nav 
-            id='navigationMenuUp' 
-            :class="[`navbar-${theme}`, `bg-${theme}`, 'navbar', 'navbar-expand-lg']"
-        >
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">My Vue</a>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <!-- Синтаксис v-for для перебора массива и отображения каждого элемента, его нужно навешивать именно на компонент, который нужно повторить. -->
-                        <li v-for="(page, index) in pages" class="nav-item" :key="index"> 
-                            <!-- Для передачи данных в тег, нужно использовать v-bind: либо просто : перед нужным параметром и без всяких двойных фигурных скобок передавать объект или действие -->
-                            <!-- Если же мы форматируем строку внутри тега, то нужно использовать также синтаксис v-bind либо просто : перед параметром и внутри ${...} подставлять значение, 
-                            перед этим нужно обернуть форматируемую строку в ``, т.е. так "'Some string ${some_attribute}'"-->
-                            <!-- Если надо внедрить в тег какое-то действие, то нужно использовать синтаксис v-on: либо просто @ перед нужным событием и без всяких двойных фигурных скобок передавать объект или действие
-                            если же добавить постфикс .prevent, то это отменяет стандартное поведение при клике, т.е. в данном случае не будет происходить href -->
-                            <!-- :class="{active: activePage == index}" здесь мы динамически добавляем класс active, если индекс страницы совпадает с индексом активной страницы -->
-                            <a 
-                                class="nav-link"
-                                :class="{active: activePage == index}" 
-                                aria-current="page" 
-                                :href="page.link.url"
-                                :title="`This link goes to the ${page.link.text} page`"
-                                @click.prevent="activePage = index",
-                            >{{ page.link.text }}</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <form class="d-flex">
-                    <button 
-                        class="btn btn-primary"
-                        @click.prevent="changeTheme()"
-                    ></button>
-                </form>
-
-            </div>
-        </nav>
+        <!-- Data Flow работает только от родителя к ребенку, т.е. родительский компонент может передавать данные в дочерний компонент, но не наоборот.
+        Если нам нужно передать данные от ребенка к родителю, то мы должны использовать события. Дочерний компонент может вызвать событие, которое будет слушаться родительским компонентом, и при этом может передать данные в это событие. 
+        Родительский компонент может обработать это событие и получить данные, которые были переданы из дочернего компонента. -->
+        <!-- Пропы (Props) для данных, события (Events) для действий. -->
+        <navbar
+            :pages="pages"
+            :activePage="activePage"
+            :nav-link-click="(index) => activePage = index"
+        ></navbar>
 
         <page-viewer 
             :page="pages[activePage]"
@@ -76,7 +46,6 @@
                     return {
                         activePage: 0,
                         useDarkNavBar: true,
-                        theme: 'dark',
                         pages: [
                             {
                                 link: {text: "Home", url: "index.html"},
@@ -96,16 +65,6 @@
                         ],
                     }
                 },
-                methods: {
-                    changeTheme() {
-                        let theme = 'light';
-
-                        if (this.theme === 'light') {
-                            theme = 'dark';
-                        }
-                        this.theme = theme;
-                    }
-                }
             })
             // Здесь мы создаем глобальный компонент page-viewer, который будет отображать контент страницы. Этот компонент можно использовать в любом месте нашего приложения.
             // Проблема в том, что мы не можем напрямую обратиться к данным родительского компонента, дочерний о них попросту не знает. Для решения этой проблемы нам нужно передать эти данные через props, т.е. мы должны явно указать, какие данные мы хотим передать в компонент и как они будут называться внутри компонента. 
@@ -120,12 +79,61 @@
                 `
             });
 
-            app.mount('body');
-
             app.component('navbar', {
-                template: 
-            })
+                // Мы не можем менять значения props внутри компонента, они только readOnly.
+                props: ["activePage", "pages", "navLinkClick"],
+                template: `
+                <nav
+                    id='navigationMenuUp' 
+                    :class="[\`navbar-\${theme}\`, \`bg-\${theme}\`, 'navbar', 'navbar-expand-lg']"
+                >
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">My Vue</a>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li v-for="(page, index) in pages" class="nav-item" :key="index"> 
+                                    <a 
+                                        class="nav-link"
+                                        :class="{active: activePage == index}" 
+                                        aria-current="page" 
+                                        :href="page.link.url"
+                                        :title="\`This link goes to the \${page.link.text} page\`"
+                                        @click.prevent="navLinkClick(index)",
+                                    >{{ page.link.text }}</a>
+                                </li>
+                            </ul>
+                        </div>
 
+                        <form class="d-flex">
+                            <button 
+                                class="btn btn-primary"
+                                @click.prevent="changeTheme()"
+                            ></button>
+                        </form>
+
+                    </div>
+                </nav>
+                `,
+
+                data() {
+                    return {
+                        theme: 'dark',
+                    }
+                },
+
+                methods: {
+                    changeTheme() {
+                        let theme = 'light';
+
+                        if (this.theme === 'light') {
+                            theme = 'dark';
+                        }
+                        this.theme = theme;
+                    }
+                }
+            }); 
+
+            app.mount('body');
         </script>
     </body>
 </html>
