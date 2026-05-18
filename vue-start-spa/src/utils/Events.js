@@ -13,7 +13,7 @@ export default {
     },
     $emit(eventName, data) {
         if (events.has(eventName)) {
-            events.get(eventName).forEach(fn => fn(data));
+            events.get(eventName).forEach((fn) => fn(data)); // forEach т.к. у нас в качестве значения в хеш-мапе выступает список функций (обработчиков)
         }
     }
 }

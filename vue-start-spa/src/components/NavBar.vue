@@ -36,7 +36,6 @@ export default {
         NavbarLink,
     },
     props: ["activePage", "pages"],
-    emits: ['navLinkClick'],
     created() {
         this.getThemeSetting();
     },
