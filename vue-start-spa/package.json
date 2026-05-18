@@ -1,0 +1,20 @@
+{
+  "name": "vue-start-spa",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "98.css": "^0.1.21",
+    "bootstrap": "^5.3.8",
+    "core-js": "^3.8.3",
+    "vue": "^3.2.13",
+    "vue-router": "^5.0.7"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0"
+  }
+}

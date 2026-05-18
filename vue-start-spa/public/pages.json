@@ -1,0 +1,34 @@
+[
+    {
+        "link": {
+            "text": "Home",
+            "url": "index.html"
+        },
+        "pageTitle": "Home Page",
+        "content": "Welcome to the Home Page!"
+    },
+    {
+        "link": {
+            "text": "About",
+            "url": "about.html"
+        },
+        "pageTitle": "About Page",
+        "content": "Welcome to the About Page!"
+    },
+    {
+        "link": {
+            "text": "Contact",
+            "url": "contact.html"
+        },
+        "pageTitle": "Contact Page",
+        "content": "Welcome to the Contact Page!"
+    },
+    {
+        "link": {
+            "text": "Template",
+            "url": "template.html"
+        },
+        "pageTitle": "Template Page",
+        "content": "Welcome to the Template Page!"
+    }
+]
