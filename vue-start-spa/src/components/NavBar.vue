@@ -11,8 +11,16 @@
                     v-for="(page, index) in pages" class="nav-item" :key="index"
                     :page="page"
                     :index="index"
-                    :isActive="activePage == index"
                 ></navbar-link>
+
+                <li>
+                    <router-link
+                        to="/personal"
+                        class="nav-link"
+                        active-class="active emphasize"
+                        aria-current="page" 
+                    >{{ personalPage.link.text }}</router-link>
+                </li>
             </ul>
         </div>
 
@@ -35,14 +43,16 @@ export default {
     components: {
         NavbarLink,
     },
-    props: ["activePage", "pages"],
-    emits: ['navLinkClick'],
     created() {
         this.getThemeSetting();
+        this.pages = this.$datas.getAllPages();
+        this.personalPage = this.$datas.localStorageLoad(this.$datas.personalPageKey)
     },
     data() {
         return {
             theme: 'dark',
+            pages: [],
+            personalPage: {}
         }
     },
     methods: {
@@ -53,7 +63,7 @@ export default {
                 theme = 'dark';
             }
             this.theme = theme;
-            this.storeThemeSetting()
+            this.storeThemeSetting();
         },
         storeThemeSetting() {
             localStorage.setItem('theme', this.theme)
@@ -68,6 +78,12 @@ export default {
 }
 </script>
 
+<style>
+.emphasize {
+    text-decoration: underline !important;
+}
+</style>
+
 <style scoped>
 .btn-dark {
     background-color: #f8f9fa;
@@ -79,4 +95,5 @@ export default {
     border-color: #343a40;
     color: #fff;
 }
+
 </style>

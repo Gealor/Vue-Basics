@@ -22,13 +22,5 @@
         },
         "pageTitle": "Contact Page",
         "content": "Welcome to the Contact Page!"
-    },
-    {
-        "link": {
-            "text": "Template",
-            "url": "template.html"
-        },
-        "pageTitle": "Template Page",
-        "content": "Welcome to the Template Page!"
     }
 ]

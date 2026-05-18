@@ -1,5 +1,8 @@
 <template>
     <div class="container md-3">
+        <page-viewer
+            :personal-page="personalPage"
+        ></page-viewer>
         <form action="">
             <!-- Page Title -->
             <div class="mb-3">
@@ -71,37 +74,31 @@
 </template>
 
 <script>
+import PageViewer from './PageViewer.vue';
 export default {
+    components: {
+        PageViewer,
+    },
     // computed просто возвращает значение на основе других свойств, мы ничего не изменяем.
     computed: {
         isFormInvalid() {
             return !this.pageTitle || !this.pageContent || !this.linkText || !this.linkUrl;
         }
     },
+    created() {
+        this.personalPage = this.$datas.localStorageLoad(this.$datas.personalPageKey);
+        console.log("personalPage: ", this.personalPage)
+    },
     // emits - это способ объявить, какие события может отправлять этот компонент. 
     // Это помогает другим разработчикам понять, какие события они могут ожидать от этого компонента и как с ними взаимодействовать.
     // emits можно объявиить как список строк, или как объект, где можно сделать предварительную валидацию входных данных
-    emits: {
-        pageCreated({pageTitle, content, link}) {
-            if (!pageTitle || !content) {
-                console.error('Missing required fields');
-                return false;
-            }
-
-            if (!link || !link.text || !link.url) {
-                console.error('Link is required and must have text and url');
-                return false;
-            }
-
-            return true;
-        }
-    },
     data() {
         return {
             pageTitle: '',
             pageContent: '',
             linkText: '',
             linkUrl: '',
+            personalPage: null,
         }
     },
     methods: {
@@ -110,16 +107,19 @@ export default {
                 alert('Please fill in all fields')
                 return;
             }
-            // $emit - это способ отправить событие от дочернего компонента к родительскому.
-            // Нам не надо объявлять событие pageCreated в props, мы просто вызываем его с помощью $emit, и родительский компонент может слушать это событие и реагировать на него.
-            this.$emit('pageCreated', {
+            
+            const newPage = {
                 pageTitle: this.pageTitle,
                 content: this.pageContent,
                 link: {
                     text: this.linkText,
                     url: this.linkUrl,
                 }
-            })
+            };
+
+            this.personalPage = newPage;
+            this.$datas.localStorageSaveObj(this.$datas.personalPageKey, newPage);
+        
         }
     },
     // watch - это способ наблюдать за изменениями в данных и выполнять определенные действия, когда эти данные изменяются.
