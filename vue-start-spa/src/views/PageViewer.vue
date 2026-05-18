@@ -7,32 +7,21 @@
 
 <script>
 export default {
-    // Если в router.js мы объявили props: true, то мы использовать привычный нам watch 
+    // Если в router.js мы объявили props: true, то мы использовать привычный нам watch и в props передаем параметр.
     props: ["index", "personalPage"],
-    created() {
-        if (this.$route.params.index) {
-            this.page = this.$datas.getSinglePage(this.$route.params.index);
-        } else {
-            this.page = this.personalPage;
-        }
-
-        // Обычный watch, объявленный в export default, не расчитан на работу с внутренними переменными и методами, такими как $route, 
-        // для этого есть специальный метод $watch, который делает по сути то же самое
-        // this.$watch(() => this.$route.params, (newParams, prevParams) =>{
-        //     this.page = this.$datas.getSinglePage(newParams.index)
-        // });
-    },
-    data() {
-        return {
-            page: null,
+    // Если мы используем computed или напрямую проп (props), то нам не надо заботиться об автоматическом обновлении компонента,
+    // НО если объявить компонент в data, скопировать проп в data и использовать этот объект, то мы должны САМИ прописывать watch !!!! 
+    computed: {
+        page() {
+            if (this.$route.params.index) {
+                return this.$datas.getSinglePage(this.$route.params.index);
+            } 
+                return this.personalPage;
         }
     },
     watch: {
         index(newIndex, oldIndex) {
             this.page = this.$datas.getSinglePage(newIndex);
-        },
-        personalPage(newPage) {
-            this.page = newPage;
         }
     }
 }

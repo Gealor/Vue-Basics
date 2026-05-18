@@ -28,17 +28,19 @@ export default {
     async created() {
         const pages = await this.getPages();
         this.$datas.localStorageSaveObj(this.$datas.pagesKey, pages)
-        this.$datas.localStorageSaveObj(
-            this.$datas.personalPageKey, 
-            {
-                "link": {
-                    "text": "Template",
-                    "url": "template.html"
-                    },
-                "pageTitle": "Template Page",
-                "content": "Welcome to the Template Page!"
-            }
-        )
+        if (!this.$datas.localStorageLoad(this.$datas.personalPageKey)){
+            this.$datas.localStorageSaveObj(
+                this.$datas.personalPageKey, 
+                {
+                    "link": {
+                        "text": "Template",
+                        "url": "template.html"
+                        },
+                    "pageTitle": "Template Page",
+                    "content": "Welcome to the Template Page!"
+                }
+            );
+        }
     },
     methods: {
         // Лучше подгружать данные для страницы с какого либо сервера с помощью API, а не хранить их в коде
