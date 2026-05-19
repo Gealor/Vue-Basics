@@ -1,7 +1,11 @@
 const pagesKey = 'pages';
+const personalPageKey = 'personalPage';
 
 let pagesJson = localStorage.getItem(pagesKey);
 let pagesStore = JSON.parse(pagesJson);
+
+let personalPageJson = localStorage.getItem(personalPageKey);
+let personalPageStore = JSON.parse(personalPageJson);
 
 export default {
     getAllPages() {
@@ -9,6 +13,14 @@ export default {
     },
     getSinglePage(index) {
         return pagesStore[index];
+    },
+
+    getPersonalPage() {
+        return personalPageStore;
+    },
+    setPersonalPage(newPage) {
+        personalPageStore = newPage;
+        this.localStorageSaveObj(personalPageKey, newPage);
     },
 
     localStorageSaveObj(key, obj) {
@@ -21,6 +33,6 @@ export default {
 
         return data;
     },
-    pagesKey: "pages",
-    personalPageKey: "personalPage"
+    pagesKey: pagesKey,
+    personalPageKey: personalPageKey
 }

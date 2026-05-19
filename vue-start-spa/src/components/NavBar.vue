@@ -19,7 +19,7 @@
                         class="nav-link"
                         active-class="active emphasize"
                         aria-current="page" 
-                    >{{ personalPage.link.text }}</router-link>
+                    >{{ personalPageText }}</router-link>
                 </li>
             </ul>
         </div>
@@ -46,13 +46,17 @@ export default {
     created() {
         this.getThemeSetting();
         this.pages = this.$datas.getAllPages();
-        this.personalPage = this.$datas.localStorageLoad(this.$datas.personalPageKey)
+        this.personalPageText = this.$datas.getPersonalPage().link.text;
+
+        this.$bus.$on("personalPageUpdated", (newPage) => {
+            this.personalPageText = newPage.link.text;  
+        })
     },
     data() {
         return {
             theme: 'dark',
             pages: [],
-            personalPage: {}
+            personalPageText: '',
         }
     },
     methods: {

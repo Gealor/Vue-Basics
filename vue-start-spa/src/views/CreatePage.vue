@@ -86,7 +86,10 @@ export default {
         }
     },
     created() {
-        this.personalPage = this.$datas.localStorageLoad(this.$datas.personalPageKey);
+        this.personalPage = this.$datas.getPersonalPage();
+        this.$bus.$on("personalPageUpdated", (newPage) => {
+            this.personalPage = newPage;
+        });
         console.log("personalPage: ", this.personalPage)
     },
     // emits - это способ объявить, какие события может отправлять этот компонент. 
@@ -117,8 +120,8 @@ export default {
                 }
             };
 
-            this.personalPage = newPage;
-            this.$datas.localStorageSaveObj(this.$datas.personalPageKey, newPage);
+            this.$datas.setPersonalPage(newPage);
+            this.$bus.$emit("personalPageUpdated", newPage);
         
         }
     },
