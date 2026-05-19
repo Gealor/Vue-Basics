@@ -1,3 +1,5 @@
+import { reactive } from "vue";
+
 const pagesKey = 'pages';
 const personalPageKey = 'personalPage';
 
@@ -5,7 +7,9 @@ let pagesJson = localStorage.getItem(pagesKey);
 let pagesStore = JSON.parse(pagesJson);
 
 let personalPageJson = localStorage.getItem(personalPageKey);
-let personalPageStore = JSON.parse(personalPageJson);
+// делаю personalPageStore реактивным, чтобы при его обновлении все компоненты так же видели изменения и отображали их, 
+// без ручного обновления
+let personalPageStore = reactive(JSON.parse(personalPageJson));
 
 export default {
     getAllPages() {
@@ -19,7 +23,8 @@ export default {
         return personalPageStore;
     },
     setPersonalPage(newPage) {
-        personalPageStore = newPage;
+        Object.assign(personalPageStore, newPage); // Для реактивных объектов используем именно Object.assign, а не стандартный синтаксис через =
+        // personalPageStore = newPage;
         this.localStorageSaveObj(personalPageKey, newPage);
     },
 

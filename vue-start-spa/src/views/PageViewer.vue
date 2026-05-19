@@ -8,7 +8,7 @@
 <script>
 export default {
     // Если в router.js мы объявили props: true, то мы использовать привычный нам watch и в props передаем параметр.
-    props: ["index", "personalPage"],
+    props: ["index"],
     // Если мы используем computed или напрямую проп (props), то нам не надо заботиться об автоматическом обновлении компонента,
     // НО если объявить компонент в data, скопировать проп в data и использовать этот объект, то мы должны САМИ прописывать watch !!!! 
     computed: {
@@ -16,7 +16,7 @@ export default {
             if (this.$route.params.index) {
                 return this.$datas.getSinglePage(this.$route.params.index);
             } 
-                return this.personalPage;
+                return this.$datas.getPersonalPage();
         }
     },
     watch: {

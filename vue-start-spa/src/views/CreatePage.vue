@@ -1,8 +1,7 @@
 <template>
     <div class="container md-3">
-        <page-viewer
-            :personal-page="personalPage"
-        ></page-viewer>
+        <page-viewer></page-viewer>
+
         <form action="">
             <!-- Page Title -->
             <div class="mb-3">
@@ -85,13 +84,6 @@ export default {
             return !this.pageTitle || !this.pageContent || !this.linkText || !this.linkUrl;
         }
     },
-    created() {
-        this.personalPage = this.$datas.getPersonalPage();
-        this.$bus.$on("personalPageUpdated", (newPage) => {
-            this.personalPage = newPage;
-        });
-        console.log("personalPage: ", this.personalPage)
-    },
     // emits - это способ объявить, какие события может отправлять этот компонент. 
     // Это помогает другим разработчикам понять, какие события они могут ожидать от этого компонента и как с ними взаимодействовать.
     // emits можно объявиить как список строк, или как объект, где можно сделать предварительную валидацию входных данных
@@ -101,7 +93,6 @@ export default {
             pageContent: '',
             linkText: '',
             linkUrl: '',
-            personalPage: null,
         }
     },
     methods: {

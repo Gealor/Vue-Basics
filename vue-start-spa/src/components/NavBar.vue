@@ -19,8 +19,9 @@
                         class="nav-link"
                         active-class="active emphasize"
                         aria-current="page" 
-                    >{{ personalPageText }}</router-link>
+                    >{{ $datas.getPersonalPage().link?.text }}</router-link>
                 </li>
+                <!-- ?. — это optional chaining (опциональная цепочка). Защищает от ошибки если объект null или undefined -->
             </ul>
         </div>
 
@@ -46,17 +47,11 @@ export default {
     created() {
         this.getThemeSetting();
         this.pages = this.$datas.getAllPages();
-        this.personalPageText = this.$datas.getPersonalPage().link.text;
-
-        this.$bus.$on("personalPageUpdated", (newPage) => {
-            this.personalPageText = newPage.link.text;  
-        })
     },
     data() {
         return {
             theme: 'dark',
             pages: [],
-            personalPageText: '',
         }
     },
     methods: {
