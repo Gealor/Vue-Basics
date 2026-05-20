@@ -1,5 +1,7 @@
 # vue-start-spa
 
+Построено на этом учебном видео по Vue: https://www.youtube.com/watch?v=1GNsWa_EZdw
+
 ## Project setup
 ```
 npm install
