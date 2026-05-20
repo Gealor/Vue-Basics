@@ -110,7 +110,7 @@ export default {
     },
     methods: {
         submitFormToCreate() {
-            if (!this.pageTitle || !this.pageContent || !this.linkText || !this.linkUrl) {
+            if (this.isFormInvalid) {
                 alert('Please fill in all fields')
                 return;
             }

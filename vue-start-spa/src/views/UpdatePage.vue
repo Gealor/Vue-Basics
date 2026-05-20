@@ -74,6 +74,8 @@
 
 <script>
 import PageViewer from './PageViewer.vue';
+import { useRoute } from 'vue-router';
+
 export default {
     components: {
         PageViewer,
@@ -81,7 +83,11 @@ export default {
     // computed просто возвращает значение на основе других свойств, мы ничего не изменяем.
     computed: {
         isFormInvalid() {
-            return !this.pageTitle || !this.pageContent || !this.linkText || !this.linkUrl;
+            return !(this.pageTitle || this.pageContent || this.linkText || this.linkUrl);
+        },
+        // Определяем, редактируем ли мы личную страницу или обычную
+        isPersonalPage() {
+            return !this.$route.params.index;
         }
     },
     // emits - это способ объявить, какие события может отправлять этот компонент. 
@@ -96,22 +102,46 @@ export default {
         }
     },
     methods: {
+        loadPageData() {
+            let currentPage;
+            
+            if (this.isPersonalPage) {
+                currentPage = this.$datas.getPersonalPage();
+            } else {
+                currentPage = this.$datas.getSinglePage(this.$route.params.index);
+            }
+
+            if (currentPage) {
+                this.pageTitle = currentPage.pageTitle || '';
+                this.pageContent = currentPage.content || '';
+                this.linkText = currentPage.link?.text || '';
+                this.linkUrl = currentPage.link?.url || '';
+            }
+        },
         submitFormToUpdate() {
-            if (!this.pageTitle || !this.pageContent || !this.linkText || !this.linkUrl) {
-                alert('Please fill in all fields')
+            if (this.isFormInvalid) {
+                alert('Please fill one field')
                 return;
             }
             
+            const oldPage = this.isPersonalPage
+                ? this.$datas.getPersonalPage()
+                : this.$datas.getSinglePage(this.$route.params.index);
+
             const newPage = {
-                pageTitle: this.pageTitle,
-                content: this.pageContent,
+                pageTitle: this.pageTitle || oldPage.pageTitle,
+                content: this.pageContent || oldPage.content,
                 link: {
-                    text: this.linkText,
-                    url: this.linkUrl,
+                    text: this.linkText || oldPage.link.text,
+                    url: this.linkUrl || oldPage.link.url,
                 },
             };
 
-            this.$datas.setPersonalPage(newPage);
+            if (this.isPersonalPage) {
+                this.$datas.setPersonalPage(newPage);
+            } else {
+                this.$datas.updatePage(this.$route.params.index, newPage);
+            }
         },
     },
     // watch - это способ наблюдать за изменениями в данных и выполнять определенные действия, когда эти данные изменяются.
