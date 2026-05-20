@@ -12,11 +12,16 @@
             <tr
                 v-for="(page, index) in $datas.getAllPages()"
                 :key="index"
-                @click="goToPage(index)"
             >
-                <td>{{ page.pageTitle }}</td>
-                <td>{{ page.link.text }}</td>
-                <td>{{ page.published ? '✅' : '❌' }}</td>
+                <td
+                    @click="goToPage(index)"
+                >{{ page.pageTitle }}</td>
+                <td
+                    @click="goToPage(index)"
+                >{{ page.link.text }}</td>
+                <td
+                    @click.prevent="updatePublishedStatus(index)"
+                >{{ page.published ? '✅' : '❌' }}</td>
             </tr>
         </tbody>
     </table>
@@ -39,6 +44,12 @@ const router = useRouter();
 
 function goToPage(index) {
     router.push({ path: `/pages/${index}/edit` });
+}
+
+function updatePublishedStatus(index) {
+    let currentPage = $datas.getSinglePage(index);
+    currentPage.published = !currentPage.published;
+    $datas.updatePage(index, currentPage);
 }
 </script>
 
