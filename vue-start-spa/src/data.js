@@ -1,4 +1,5 @@
 import { reactive } from "vue";
+// reactive для объектов, ref - для примитивов (строк, чисел и т.д.)
 
 const pagesKey = 'pages';
 const personalPageKey = 'personalPage';
