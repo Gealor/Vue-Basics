@@ -4,7 +4,16 @@
     :class="[`navbar-${theme}`, `bg-${theme}`, 'navbar', 'navbar-expand-lg']"
 >
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">My Vue</a>
+        <a class="navbar-brand" href="#">
+           <li>
+                <router-link
+                    to="/pages/"
+                    class="nav-link"
+                    active-class="active emphasize-bold"
+                    aria-current="page" 
+                >My Vue</router-link>
+            </li>
+        </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <navbar-link
@@ -21,6 +30,7 @@
                         aria-current="page" 
                     >{{ $datas.getPersonalPage().link?.text }}</router-link>
                 </li>
+                
                 <!-- ?. — это optional chaining (опциональная цепочка). Защищает от ошибки если объект null или undefined -->
             </ul>
         </div>
@@ -32,7 +42,6 @@
                 @click.prevent="changeTheme()"
             ></button>
         </form>
-
     </div>
 </nav>
 </template>
@@ -99,5 +108,7 @@ export default {
     border-color: #343a40;
     color: #fff;
 }
-
+.emphasize-bold {
+    font-weight: bold;
+}
 </style>
