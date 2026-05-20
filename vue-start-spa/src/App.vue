@@ -27,7 +27,9 @@ export default {
     // Это хорошее место для выполнения асинхронных операций, таких как загрузка данных с сервера.
     async created() {
         const pages = await this.getPages();
-        this.$datas.localStorageSaveObj(this.$datas.pagesKey, pages)
+        if (!this.$datas.localStorageLoad(this.$datas.pagesKey)){
+            this.$datas.localStorageSaveObj(this.$datas.pagesKey, pages);
+        }
         if (!this.$datas.localStorageLoad(this.$datas.personalPageKey)){
             this.$datas.localStorageSaveObj(
                 this.$datas.personalPageKey, 

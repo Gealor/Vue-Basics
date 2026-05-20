@@ -20,6 +20,7 @@ export default {
     },
     createNewPage(newPage) {
         pagesStore.push(newPage);
+        this.localStorageSaveObj(pagesKey, pagesStore);
     },
 
     getPersonalPage() {
