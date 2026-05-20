@@ -1,6 +1,6 @@
 <template>
-    <div v-if='page' id='content' class="container">
-        <h1 class="emphasize">{{ page.pageTitle }}</h1>
+    <div v-if='page' id='content' class="container-centered">
+        <h1 class="emphasize-under-over">{{ page.pageTitle }}</h1>
         <p>{{ page.content }}</p>
     </div>
 </template>
@@ -27,14 +27,10 @@ export default {
 }
 </script>
 
-<style scoped>
-.emphasize {
+<style>
+.emphasize-under-over {
     text-decoration: underline overline;
     text-shadow: 2px 2px 3px #848484;
 }
-
-.container {
-    margin-top: 20px; 
-    text-align: center;
-}
 </style>
+

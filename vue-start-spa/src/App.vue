@@ -37,7 +37,8 @@ export default {
                         "url": "template.html"
                         },
                     "pageTitle": "Template Page",
-                    "content": "Welcome to the Template Page!"
+                    "content": "Welcome to the Template Page!",
+                    "published": true,
                 }
             );
         }
@@ -53,3 +54,10 @@ export default {
     }
 }
 </script>
+
+<style>
+.container-centered {
+    margin-top: 20px; 
+    text-align: center;
+}
+</style>

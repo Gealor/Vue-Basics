@@ -5,7 +5,8 @@
             "url": "index.html"
         },
         "pageTitle": "Home Page",
-        "content": "Welcome to the Home Page!"
+        "content": "Welcome to the Home Page!",
+        "published": true
     },
     {
         "link": {
@@ -13,7 +14,8 @@
             "url": "about.html"
         },
         "pageTitle": "About Page",
-        "content": "Welcome to the About Page!"
+        "content": "Welcome to the About Page!",
+        "published": true
     },
     {
         "link": {
@@ -21,6 +23,7 @@
             "url": "contact.html"
         },
         "pageTitle": "Contact Page",
-        "content": "Welcome to the Contact Page!"
+        "content": "Welcome to the Contact Page!",
+        "published": true
     }
 ]

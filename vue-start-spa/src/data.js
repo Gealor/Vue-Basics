@@ -4,7 +4,7 @@ const pagesKey = 'pages';
 const personalPageKey = 'personalPage';
 
 let pagesJson = localStorage.getItem(pagesKey);
-let pagesStore = JSON.parse(pagesJson);
+let pagesStore = reactive(JSON.parse(pagesJson));
 
 let personalPageJson = localStorage.getItem(personalPageKey);
 // делаю personalPageStore реактивным, чтобы при его обновлении все компоненты так же видели изменения и отображали их, 
@@ -17,6 +17,9 @@ export default {
     },
     getSinglePage(index) {
         return pagesStore[index];
+    },
+    createNewPage(newPage) {
+        pagesStore.push(newPage);
     },
 
     getPersonalPage() {

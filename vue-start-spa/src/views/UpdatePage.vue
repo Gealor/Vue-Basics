@@ -1,5 +1,7 @@
 <template>
     <div class="container md-3">
+        <page-viewer></page-viewer>
+
         <form action="">
             <!-- Page Title -->
             <div class="mb-3">
@@ -59,26 +61,12 @@
                 />
             </div>
 
-            <!-- Published -->
-             <div class="row mb-3">
-                <div class="form-check">
-                    <input 
-                        class="form-check-input text-area-resize-none" 
-                        type="checkbox"
-                        v-model="published"
-                    >
-                    <label class="form-check-label" for="gridCheck1">
-                        Published
-                    </label>
-                </div>
-             </div>
-
             <div class="mb-3 d-flex gap-2">
                 <button
                     class="btn btn-primary"
-                    @click.prevent="submitFormToCreate()"
+                    @click.prevent="submitFormToUpdate()"
                     :disabled="isFormInvalid"
-                >Create Page</button>
+                >Update Page</button>
             </div>
         </form>
     </div>
@@ -105,11 +93,10 @@ export default {
             pageContent: '',
             linkText: '',
             linkUrl: '',
-            published: true,
         }
     },
     methods: {
-        submitFormToCreate() {
+        submitFormToUpdate() {
             if (!this.pageTitle || !this.pageContent || !this.linkText || !this.linkUrl) {
                 alert('Please fill in all fields')
                 return;
@@ -122,11 +109,10 @@ export default {
                     text: this.linkText,
                     url: this.linkUrl,
                 },
-                published: true,
             };
 
-            this.$datas.createNewPage(newPage)
-        }
+            this.$datas.setPersonalPage(newPage);
+        },
     },
     // watch - это способ наблюдать за изменениями в данных и выполнять определенные действия, когда эти данные изменяются.
     watch: {

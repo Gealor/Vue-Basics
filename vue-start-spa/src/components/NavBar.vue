@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <navbar-link
-                    v-for="(page, index) in pages" class="nav-item" :key="index"
+                    v-for="(page, index) in publishedPages" class="nav-item" :key="index"
                     :page="page"
                     :index="index"
                 ></navbar-link>
@@ -47,6 +47,11 @@ export default {
     created() {
         this.getThemeSetting();
         this.pages = this.$datas.getAllPages();
+    },
+    computed: {
+        publishedPages() {
+            return this.pages.filter((page) => page.published);
+        }
     },
     data() {
         return {
