@@ -17,9 +17,11 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <navbar-link
-                    v-for="(page, index) in publishedPages" class="nav-item" :key="index"
+                    v-for="(page, filteredIndex) in publishedPages" 
+                    class="nav-item" 
+                    :key="getOriginalIndex(filteredIndex)"
                     :page="page"
-                    :index="index"
+                    :index="getOriginalIndex(filteredIndex)"
                 ></navbar-link>
 
                 <li>
@@ -87,6 +89,10 @@ export default {
                 this.theme = theme;
             }
         },
+        // Находит оригинальный индекс страницы в полном массиве pages
+        getOriginalIndex(filteredIndex) {
+            return this.pages.indexOf(this.publishedPages[filteredIndex]);
+        }
     },
 }
 </script>
