@@ -74,7 +74,6 @@
 
 <script>
 import PageViewer from './PageViewer.vue';
-import { useRoute } from 'vue-router';
 
 export default {
     components: {
