@@ -15,7 +15,7 @@
                     type="text" 
                     class="form-control text-area-resize-none"
                     placeholder="Title Page"
-                    @input="(event) => pageTitle=event.target.value"
+                    v-model="pageTitle"
                 />
             </div>
 
@@ -67,14 +67,99 @@
                     @click.prevent="submitFormToUpdate()"
                     :disabled="isFormInvalid"
                 >Update Page</button>
+                <button
+                    class="btn btn-primary"
+                    @click.prevent="goToPagesList()"
+                >Return to the pages list</button>
             </div>
         </form>
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, inject, watch, ref } from 'vue';
 import PageViewer from './PageViewer.vue';
+import { useRoute } from 'vue-router';
+import router from '@/router';
 
+const route = useRoute();
+const $datas = inject("$datas2");
+
+// Любые переменные, которые используются в форме и изменяются, должны быть реактивными, чтобы Vue сам отслеживал их изменение
+let pageTitle = ref('');
+let pageContent = ref('');
+let linkText = ref('');
+let linkUrl = ref('');
+
+const isFormInvalid = computed(() => {
+    return !(pageTitle.value || pageContent.value || linkText.value || linkUrl.value);
+});
+
+const isPersonalPage = computed(() => {
+    return !route.params.index;
+});
+
+function submitFormToUpdate() {
+    // computed поля получаем через .value (.value обязателен только в <script>)
+    if (isFormInvalid.value) {
+        alert('Please fill one field')
+        return;
+    }
+    
+    const oldPage = isPersonalPage.value
+        ? $datas.getPersonalPage()
+        : $datas.getSinglePage(route.params.index);
+
+    const newPage = {
+        pageTitle: pageTitle.value || oldPage.pageTitle,
+        content: pageContent.value || oldPage.content,
+        link: {
+            text: linkText.value || oldPage.link.text,
+            url: linkUrl.value || oldPage.link.url,
+        },
+    };
+
+    if (isPersonalPage.value) {
+        $datas.setPersonalPage(newPage);
+    } else {
+        $datas.updatePage(route.params.index, newPage);
+    }
+};
+
+function loadPageData() {
+    let currentPage;
+    
+    if (isPersonalPage.value) {
+        currentPage = $datas.getPersonalPage();
+    } else {
+        currentPage = $datas.getSinglePage(route.params.index);
+    }
+
+    if (currentPage) {
+        pageTitle.value = currentPage.pageTitle || '';
+        pageContent.value = currentPage.content || '';
+        linkText.value = currentPage.link?.text || '';
+        linkUrl.value = currentPage.link?.url || '';
+    }
+};
+
+function goToPagesList() {
+    router.push({ path: '/pages'})
+}
+
+loadPageData();
+
+
+watch(pageTitle, (newTitle, oldTitle) => {
+    if (linkText.value == oldTitle) {
+        linkText.value = newTitle;
+    }
+});
+
+</script>
+
+<!-- <script>
+import PageViewer from './PageViewer.vue';
 export default {
     components: {
         PageViewer,
@@ -99,6 +184,9 @@ export default {
             linkText: '',
             linkUrl: '',
         }
+    },
+    created() {
+        this.loadPageData();
     },
     methods: {
         loadPageData() {
@@ -152,7 +240,7 @@ export default {
         }
     }
 }
-</script>
+</script> -->
 
 <style scoped>
 .text-area-resize-none {

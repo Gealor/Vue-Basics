@@ -84,7 +84,51 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed, inject, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
+const router = useRoute();
+const $datas = inject("$datas2");
+
+let pageTitle = ref('');
+let pageContent = ref('');
+let linkText = ref('');
+let linkUrl = ref('');
+let published = ref(true);
+
+const isFormInvalid = computed(() => {
+    return !pageTitle.value || !pageContent.value || !linkText.value || !linkUrl.value;
+});
+
+function submitFormToCreate() {
+    if (isFormInvalid.value) {
+        alert('Please fill in all fields')
+        return;
+    }
+    
+    const newPage = {
+        pageTitle: pageTitle.value,
+        content: pageContent.value,
+        link: {
+            text: linkText.value,
+            url: linkUrl.value,
+        },
+        published: published.value,
+    };
+
+    $datas.createNewPage(newPage)
+};
+
+watch(pageTitle, (newTitle, oldTitle) => {
+    if (linkText.value == oldTitle) {
+        linkText.value = newTitle;
+    }
+});
+
+</script>
+
+<!-- <script>
 import PageViewer from './PageViewer.vue';
 export default {
     components: {
@@ -122,7 +166,7 @@ export default {
                     text: this.linkText,
                     url: this.linkUrl,
                 },
-                published: true,
+                published: this.published,
             };
 
             this.$datas.createNewPage(newPage)
@@ -137,7 +181,7 @@ export default {
         }
     }
 }
-</script>
+</script> -->
 
 <style scoped>
 .text-area-resize-none {
