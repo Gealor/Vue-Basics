@@ -17,5 +17,6 @@ app.config.globalProperties.$bus = $bus;
 app.config.globalProperties.$datas = $datas;
 // аналог, app.config.globalProperties.$datas = $datas;
 app.provide("$datas2", $datas);
+app.provide("$bus2", $bus);
 
 app.mount("#app");

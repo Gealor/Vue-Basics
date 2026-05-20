@@ -22,6 +22,14 @@
                 <td
                     @click.prevent="updatePublishedStatus(index)"
                 >{{ page.published ? '✅' : '❌' }}</td>
+                <td>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click.prevent="$datas.deletePage(index)"
+                        :disabled="isFormInvalid"
+                    >Delete {{ page.pageTitle }}</button>
+                </td>
             </tr>
         </tbody>
     </table>

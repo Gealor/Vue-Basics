@@ -27,6 +27,14 @@ export default {
         Object.assign(pagesStore[index], updatedPage);
         this.localStorageSaveObj(pagesKey, pagesStore);
     },
+    deletePage(index) {
+        // splice(start, deleteCount, [item1], [item2], ...), 
+        // где start - стартовая позиция, с которой начнем удалять, 
+        // deleteCount - количество элементов, которые будут удалены, начиная с start,
+        // item1, item2, ... - элементы, которые надо добавить в массив
+        pagesStore.splice(index, 1);
+        this.localStorageSaveObj(pagesKey, pagesStore);
+    },
 
     getPersonalPage() {
         return personalPageStore;
