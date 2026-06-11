@@ -11,8 +11,7 @@ const router = createRouter(
         routes: [
             { path: '/:index?', component: PageViewer, props: true}, // props означает, что переданные параметры будут переданы как props
             { 
-                path: '/pages', 
-                component: Pages,
+                path: '/pages', component: Pages,
                 children: [
                     { path: '', component: PagesList },
                     { path: 'create', component: CreatePage },
